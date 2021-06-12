@@ -22,6 +22,9 @@ pack_format_map = {
     '1.15': 5,
     '1.15': 5,
     '1.16': 5,
+    '1.16.2': 6,
+    '1.16.5': 6,
+    '1.17': 7,
 }
 
 color_codes = {
@@ -187,7 +190,6 @@ def main():
     with open('default_colors.json', 'rb') as f:
         color_mappings = json.load(f)
     color_mappings.extend(args.color)
-    print(color_mappings)
     # Download language files for each requested version.
     version_languages = download_languages(*args.version)
     # Generate packs.

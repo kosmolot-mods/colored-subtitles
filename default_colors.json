@@ -168,6 +168,8 @@
 	["subtitles.entity.zombie.", "dark_red"],
 	["subtitles.entity.zombie.infect", "yellow"],
 	["subtitles.entity.zombie_horse.", "dark_green"],
+	["subtitles.entity.zombie_pigman.", "dark_green"],
+	["subtitles.entity.zombie_pigman.angry", "red"],
 	["subtitles.entity.zombie_villager.", "dark_red"],
 	["subtitles.entity.zombie_villager.converted", "gold"],
 	["subtitles.entity.zombie_villager.cure", "dark_green"],

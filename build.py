@@ -130,7 +130,8 @@ def load_language(contents, pack_format):
         return json.loads(contents)
     # Old packs: key-value format.
     lines = contents.rstrip().replace('\r', '').split('\n')
-    return {key: value for line.partition('=')[::2] in lines}
+    lines = list(filter(bool, lines))
+    return {key: value for key, value in [line.partition('=')[::2] for line in lines]}
 
 
 def dump_language(translation, pack_format):

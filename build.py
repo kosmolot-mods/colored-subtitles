@@ -160,6 +160,8 @@ def generate_pack(version, languages, colors):
     f.writestr('pack.mcmeta', json.dumps(metadata))
     # Insert pack artwork.
     #f.write('pack.png') # TODO
+    # Keep track of the unhandled ones.
+    unhandled = set()
     # Map and write language files.
     for language_path, language_content in languages:
         # Load translation file.
@@ -175,8 +177,13 @@ def generate_pack(version, languages, colors):
             # Apply formatting codes if needed.
             if new_color is not None:
                 translation[key] = color_codes[new_color] + translation[key]
+            else:
+                if key.startswith('subtitles.'):
+                    unhandled.add(key)
         # Create new mapped file.
         f.writestr(os.path.join('assets', language_path), dump_language(translation, pack_format))
+    for key in sorted(unhandled):
+        print("Warning: no color code found for", key)
     print('Generated pack for version %s.'  % version)
 
         

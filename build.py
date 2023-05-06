@@ -118,7 +118,7 @@ def download_languages(*versions):
             if key.startswith('minecraft/lang/'):
                 # Download the language file.
                 print('[%s] Retrieving language %s' % (version, key))
-                language_content = download('http://resources.download.minecraft.net/%s/%s' % (value['hash'][:2], value['hash']), value['hash'], as_utf8=True)
+                language_content = download('https://resources.download.minecraft.net/%s/%s' % (value['hash'][:2], value['hash']), value['hash'], as_utf8=True)
                 languages.append((key, language_content))
         version_languages.append((version, languages))
     print('Languages downloaded.')

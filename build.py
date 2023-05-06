@@ -162,7 +162,7 @@ def generate_pack(version, languages, colors):
     }
     f.writestr('pack.mcmeta', json.dumps(metadata))
     # Insert pack artwork.
-    #f.write('pack.png') # TODO
+    f.write('pack.png')
     # Keep track of the unhandled ones.
     unhandled = set()
     # Map and write language files.

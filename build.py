@@ -1,33 +1,27 @@
-#!/usr/bin/env python
+#!/usr/bin/env -S python -u
 
-import argparse
 import hashlib
 import io
 import json
 import os
+import sys
 import urllib.parse
 import urllib.request
 import zipfile
 
+# version is the last version that supported the given pack_format
+# this is to ensure maximum coverage, while minimizing the number
+# of releases we have to do
 pack_format_map = {
-    '1.6': 1,
-    '1.7': 1,
-    '1.8': 1,
-    '1.9': 2,
-    '1.10': 2,
-    '1.11': 3,
-    '1.12': 3,
-    '1.13': 4,
-    '1.14': 4,
-    '1.15': 5,
-    '1.15': 5,
-    '1.16': 5,
-    '1.16.2': 6,
+    #'1.8.9': 1, # didn't have subtitles
+    '1.10.2': 2,
+    '1.12.2': 3,
+    '1.14.4': 4,
+    '1.16.1': 5,
     '1.16.5': 6,
-    '1.17': 7,
     '1.17.1': 7,
-    '1.18': 8,
-    '1.19': 9,
+    '1.18.2': 8,
+    '1.19.2': 9,
     '1.19.3': 12,
     '1.19.4': 13,
 }
@@ -147,9 +141,7 @@ def dump_language(translation, pack_format):
 def generate_pack(version, languages, colors):
     print('Generating pack for version %s...'  % version)
     # Guess correct pack format.
-    for key, value in pack_format_map.items():
-        if version.startswith(key):
-            pack_format = value
+    pack_format = pack_format_map[version]
     print('Using pack format %d for version %s.' % (pack_format, version))
     # Create zipfile.
     f = zipfile.ZipFile(os.path.join('output', "Kosmolot's Colored Subtitles %s.zip" % version), 'w', compression=zipfile.ZIP_DEFLATED)
@@ -194,25 +186,18 @@ def generate_pack(version, languages, colors):
     print('Generated pack for version %s.'  % version)
 
         
-def main():
+def main(versions):
     # Create directories.
     for directory in ['cache', 'output']:
         os.makedirs(directory, exist_ok=True)
-    # Find out what the user wants.
-    parser = argparse.ArgumentParser(description='Build Colored Subtitles resource pack.')
-    parser.add_argument('-c', '--color', action='append', default=[], type=lambda s: s.partition('=')[0::2])
-    parser.add_argument('-v', '--version', action='append', default=[], required=True)
-    args = parser.parse_args()
-    # Merge default color mappings with user-requested mappings.
+    # Load color mappings
     with open('default_colors.json', 'rb') as f:
         color_mappings = json.load(f)
-    color_mappings.extend(args.color)
-    # Download language files for each requested version.
-    version_languages = download_languages(*args.version)
+    # Download language files
+    version_languages = download_languages(*versions)
     # Generate packs.
     for version, languages in version_languages:
         generate_pack(version, languages, color_mappings)
 
-
 if __name__ == '__main__':
-    main()
+    main(sys.argv[1:] or pack_format_map.keys())

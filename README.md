@@ -9,7 +9,7 @@ This script generates a resource pack with colored subtitles.
 ## Usage
 
 ```shell
-build.py -v 1.17
+./build.py 1.17
 ```
 
 ## License

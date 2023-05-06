@@ -173,6 +173,11 @@ def generate_pack(version, languages, colors):
         # Map translation file.
         for key in list(translation.keys()):
             new_color = None
+            # optimization: skip keys that don't contain subtitles,
+            # they will be inherited from the builtin translation
+            if not key.startswith('subtitles.'):
+                del translation[key]
+                continue
             # Color rules are applied consecutively, last one wins.
             for prefix, color in colors:
                 if key.startswith(prefix):
@@ -181,8 +186,7 @@ def generate_pack(version, languages, colors):
             if new_color is not None:
                 translation[key] = color_codes[new_color] + translation[key]
             else:
-                if key.startswith('subtitles.'):
-                    unhandled.add(key)
+                unhandled.add(key)
         # Create new mapped file.
         f.writestr(os.path.join('assets', language_path), dump_language(translation, pack_format))
     for key in sorted(unhandled):

@@ -152,7 +152,7 @@ def generate_pack(version, languages, colors):
             pack_format = value
     print('Using pack format %d for version %s.' % (pack_format, version))
     # Create zipfile.
-    f = zipfile.ZipFile(os.path.join('output', 'ColoredSubtitles-%s.zip' % version), 'w', compression=zipfile.ZIP_DEFLATED)
+    f = zipfile.ZipFile(os.path.join('output', "Kosmolot's Colored Subtitles %s.zip" % version), 'w', compression=zipfile.ZIP_DEFLATED)
     # Insert metadata.
     metadata = {
         'pack': {

@@ -5,6 +5,7 @@ import io
 import json
 import os
 import sys
+import datetime
 import urllib.parse
 import urllib.request
 import zipfile
@@ -144,7 +145,8 @@ def generate_pack(version, languages, colors):
     pack_format = pack_format_map[version]
     print('Using pack format %d for version %s.' % (pack_format, version))
     # Create zipfile.
-    f = zipfile.ZipFile(os.path.join('output', "Kosmolot's Colored Subtitles %s.zip" % version), 'w', compression=zipfile.ZIP_DEFLATED)
+    timestamp = datetime.datetime.now().strftime("%Y%m%d")
+    f = zipfile.ZipFile(os.path.join('output', "Kosmolot's Colored Subtitles %s+%s.zip" % (version, timestamp)), 'w', compression=zipfile.ZIP_DEFLATED)
     # Insert metadata.
     metadata = {
         'pack': {

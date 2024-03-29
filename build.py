@@ -26,6 +26,7 @@ pack_format_map = {
     '1.19.3': 12,
     '1.19.4': 13,
     '1.20': 15,
+    '1.20.2': [18, 22],
 }
 
 color_codes = {
@@ -144,17 +145,29 @@ def generate_pack(version, languages, colors):
     print('Generating pack for version %s...'  % version)
     # Guess correct pack format.
     pack_format = pack_format_map[version]
+    if isinstance(pack_format, list):
+        # On modern pack versions we can support multiple versions at once
+        pack_format_range = pack_format[:]
+        pack_format = pack_format[0]
+    else:
+        pack_format_range = None
     print('Using pack format %d for version %s.' % (pack_format, version))
     # Create zipfile.
     timestamp = datetime.datetime.now().strftime("%Y%m%d")
     f = zipfile.ZipFile(os.path.join('output', "Kosmolot's Colored Subtitles %s+%s.zip" % (version, timestamp)), 'w', compression=zipfile.ZIP_DEFLATED)
-    # Insert metadata.
+    # Create metadata.
     metadata = {
         'pack': {
             'pack_format': pack_format,
             'description': 'By Kosmolot',
         }
     }
+    if pack_format_range is not None:
+        metadata['pack']['supported_formats'] = {
+            'min_inclusive': pack_format_range[0],
+            'max_inclusive': pack_format_range[1],
+        }
+    # Write metadata.
     f.writestr('pack.mcmeta', json.dumps(metadata))
     # Insert pack artwork.
     f.write('pack.png')

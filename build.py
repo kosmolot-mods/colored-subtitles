@@ -37,6 +37,8 @@ pack_format_map = {
     '1.21.8': 64,
     '1.21.9': 69,
     '1.21.10': 69,
+    '1.21.11': 75,
+    '26.1': 84,
 }
 
 color_codes = {
@@ -115,7 +117,7 @@ def download_languages(*versions):
         client_jar = download(version_manifest['downloads']['client']['url'], version_manifest['downloads']['client']['sha1'])
         client = zipfile.ZipFile(io.BytesIO(client_jar), 'r')
         for path in client.namelist():
-            if path.startswith('assets/minecraft/lang'):
+            if path.startswith('assets/minecraft/lang') and not path.endswith('/'):
                 print('Found lang asset in JAR: %s' % path)
                 key = path[len('assets/'):]
                 language_content = client.read(path).decode('utf8')
@@ -169,7 +171,7 @@ def generate_pack(version, languages, colors):
     metadata = {
         'pack': {
             'pack_format': pack_format,
-            'description': 'By Kosmolot',
+            'description': 'By Kosmolot & Kevinthegreat',
         }
     }
     if pack_format_range is not None:
@@ -211,7 +213,7 @@ def generate_pack(version, languages, colors):
         print("Warning: no color code found for", key)
     print('Generated pack for version %s.'  % version)
 
-        
+
 def main(versions):
     # Create directories.
     for directory in ['cache', 'output']:

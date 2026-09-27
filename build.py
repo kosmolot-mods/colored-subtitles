@@ -39,6 +39,8 @@ pack_format_map = {
     '1.21.10': 69,
     '1.21.11': 75,
     '26.1': 84,
+    '26.2': 88,
+    '26.3': 97.1
 }
 
 color_codes = {
@@ -163,7 +165,7 @@ def generate_pack(version, languages, colors):
         pack_format = pack_format[0]
     else:
         pack_format_range = None
-    print('Using pack format %d for version %s.' % (pack_format, version))
+    print('Using pack format %s for version %s.' % (pack_format, version))
     # Create zipfile.
     timestamp = datetime.datetime.now().strftime("%Y%m%d")
     f = zipfile.ZipFile(os.path.join('output', "Kosmolot's Colored Subtitles %s+%s.zip" % (version, timestamp)), 'w', compression=zipfile.ZIP_DEFLATED)
